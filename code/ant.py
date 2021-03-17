@@ -10,8 +10,8 @@ class Ant():
     are probabilistics using a function
     with the edges attributes of the Graph.
     """
-    def __init__(self, Graph, ALPHA, BETA, seed):
-        self.seed = seed
+    def __init__(self, Graph, ALPHA, BETA, seed, extended_seed):
+        self.seed = seed + extended_seed
         self.ALPHA = ALPHA
         self.BETA = BETA
         self.G, node_names = Graph.getGraph()
