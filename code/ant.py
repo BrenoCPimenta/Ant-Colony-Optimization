@@ -1,4 +1,3 @@
-from graph import Graph
 import numpy as np
 
 class Ant():
@@ -10,11 +9,11 @@ class Ant():
     are probabilistics using a function
     with the edges attributes of the Graph.
     """
-    def __init__(self, Graph, ALPHA, BETA, seed, extended_seed):
+    def __init__(self, Graph, node_names, ALPHA, BETA, seed, extended_seed):
         self.seed = seed + extended_seed
         self.ALPHA = ALPHA
         self.BETA = BETA
-        self.G, node_names = Graph.getGraph()
+        self.G = Graph 
         self.not_visited = node_names
         self.current_node = (-1,-1)
         self.ant_path = []
