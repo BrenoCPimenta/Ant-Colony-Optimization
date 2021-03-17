@@ -102,22 +102,8 @@ class Graph():
         """
         return self.G, self.node_names
 
-    #def updatePheromone(self, walk):
-    # desirability
-    #    time = self.__calculateTimeFromWalk(walk)
-
-    #def __calculateTimeFromWalk(self, walk):
-    #    pass
-
-
-
-
-
-
-
-
-
-
+    def updatePheromone(self, walk, time):
+        return 22
 
     def printGraph(self):
         """
