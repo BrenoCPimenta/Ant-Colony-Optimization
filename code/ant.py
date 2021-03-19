@@ -14,7 +14,7 @@ class Ant():
         self.ALPHA = ALPHA
         self.BETA = BETA
         self.G = Graph 
-        self.not_visited = node_names
+        self.not_visited = node_names.copy()
         self.current_node = (-1,-1)
         self.ant_path = []
 
@@ -30,13 +30,13 @@ class Ant():
         #Set seed for Ant decisions
         np.random.seed(self.seed)
         #Start the walk on graph proccess
+        #print("     start ant->", self.not_visited)
         while self.not_visited:
-            print("FROM: ", self.current_node)
             next_node = self.__chooseNextNode()
-            print("TO: ", next_node)
             self.ant_path.append((self.current_node, next_node))
             self.current_node = next_node
             self.not_visited.remove(next_node)
+        #    print("             next_node->", next_node)
         return self.ant_path
 
 

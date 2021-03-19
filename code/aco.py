@@ -60,11 +60,11 @@ class ACO():
             #  so it can sum all edges contribution along this cycle:
             this_cycle_edges_contributions = dict.fromkeys(self.graph_edges,0) 
 
-            for ant_number in range(self.ant_numbers)
+            for ant_number in range(self.ant_numbers):
                 #Create Ant, make it walk through the graph and calculate makespan time for that walk
                 ant = Ant(this_cycle_Graph, self.node_names, self.ALPHA, self.BETA, self.seed, extended_seed=ant_number)
                 ant_path = ant.walk()
-                path_time = self.__calculateMakespanTime(ant_path)
+                path_time = self.enviroment.calculateMakespanTime(ant_path)
                 #Recording the pheromone contribution for each edge of this walk
                 for edge in ant_path:
                     this_cycle_edges_contributions[edge] += self.pheromone_constant/path_time
@@ -87,6 +87,8 @@ class ACO():
                             mean(this_cycle_times),
                             max(this_cycle_times)
             ]})
+
+            #print("Cycle ", cycle_number, ": ",results_control[cycle_number])
         #generating file with fitness through cycles
         json.dump( results_control, open( "ACO_cycles_results.json", 'w' ) )
 

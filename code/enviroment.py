@@ -171,7 +171,7 @@ class Enviroment():
         for edge in path:
             this_job = edge[1][0]
             this_machine = edge[1][1]
-            this_task_time = self.data[this_job][str(this_machine)]
+            this_task_time = int(self.data[this_job][str(this_machine)])
             moment = machine_moments[this_machine]
             moment_for_task_not_found = True
             #Verify in wich moment the task can initiate
