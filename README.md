@@ -14,13 +14,15 @@ Ant Colony Optimization (ACO) for Job Shop Scheduling Problem.
 3. Install requirements: `pip install -r requirements.txt`
 
 ### Execute:
-> The optimized parameters are at the beginning of the main file.
 1. Activate enviroment:  `cd code && source venv/bin/activate`
 2. Execute: `python3 main.py`
 3. Exit: `deactivate`
 
 
-### Exit:
+### Input:
+The optimized parameters are at the beginning of the main file, change at will.
+
+### Output:
 When executing the algorithm, the time of the best schedule will be printed. A *ACO_cycles_results.json* file will also be generated, where all time results per cycles will be recorded with the following order: the fastest, the average and the longest time.
 
 
