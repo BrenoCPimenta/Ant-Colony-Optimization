@@ -19,20 +19,20 @@ class ACO():
         Sequence Job/Machine for this path.
     """ 
 
-    def __init__(self, ALPHA, BETA, dataset, cycles, ant_numbers, init_pheromone, seed):
+    def __init__(self, ALPHA, BETA, dataset, cycles, ant_numbers, init_pheromone, pheromone_constant, min_pheromone, evaporation_rate, seed):
         self.ALPHA = ALPHA
         self.ant_numbers = ant_numbers
         self.BETA = BETA
         self.cycles = cycles
+        self.pheromone_constant = pheromone_constant
+        self.evaporation_rate = evaporation_rate
         self.seed = seed
 
-        #Calculating pheromone evaporation value through cycles 
-        self.evaporation = (init_pheromone / cycles) - 0.0001
-
-        #Creates the Enviroment and get global data
-        self.enviroment = Enviroment(dataset, init_pheromone)
+        #Inicialize the Enviroment and set data
+        self.enviroment = Enviroment(dataset, init_pheromone, min_pheromone)
         self.time_of_executions = self.enviroment.getTimeOfExecutions()
         self.node_names = self.enviroment.getNodeNames()
+        self.graph_edges = self.enviroment.getEdges()
     
 
     def releaseTheAnts(self):
@@ -45,34 +45,40 @@ class ACO():
         returns:
             - Print the best time.
             - Generate a file with the 
-            time results all cycles:
-                [Fastest, Mean, Longest]
+                time results of all cycles
+                with this structure:
+                {cycle : [Fastest, Mean, Longest], ...}
         """
         results_control = {}
         fastest_time = sys.float_info.max  #1.7976931348623157e+308
         fastest_path = []
         for cycle_number in range(self.cycles):
             this_cycle_times = []
+            #Get the updated graph:
             this_cycle_Graph = self.enviroment.getGraph()
+            #Create dict with each edge as a key and all values as zeros,
+            #  so it can sum all edges contribution along this cycle:
+            this_cycle_edges_contributions = dict.fromkeys(self.graph_edges,0) 
 
             for ant_number in range(self.ant_numbers)
-                ant = Ant(this_cycle_Graph, self.ALPHA, self.BETA, self.seed, extended_seed=ant_number)
+                #Create Ant, make it walk through the graph and calculate makespan time for that walk
+                ant = Ant(this_cycle_Graph, self.node_names, self.ALPHA, self.BETA, self.seed, extended_seed=ant_number)
                 ant_path = ant.walk()
                 path_time = self.__calculateMakespanTime(ant_path)
-                pheromone_weight = self.__calculatePheromoneWeight(path_time)
-                self.enviroment.updatePheromone(ant_path, pheromone_weight)
-
-                #Recording cycle values
+                #Recording the pheromone contribution for each edge of this walk
+                for edge in ant_path:
+                    this_cycle_edges_contributions[edge] += self.pheromone_constant/path_time
+                #Recording cycle values:
                 this_cycle_times.append(path_time)
                 if path_time < fastest_time:
                     fastest_time = path_time
                     fastest_path = ant_path
 
-            #evaporate
-            self.enviroment.evaporatePheromone(self.evaporation)
-
-            #Set enviroment with update pheromones for next cycle
-            self.current_G = copy.deepcopy(next_G)
+            #Update pheromone on edges of the graph
+            self.enviroment.updatePheromone(
+                self.pheromone_constant,
+                self.evaporation_rate,
+                this_cycle_edges_contributions)
 
             #save recorded values
             results_control.update(
@@ -91,8 +97,3 @@ class ACO():
         print("BEST PATH TIME: ", fastest_time, " seconds")
 
 
-    def __calculateMakespanTime(self, path):
-        return 2
-
-    def __calculatePheromoneWeight(self, time):
-        return 4
