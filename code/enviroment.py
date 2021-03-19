@@ -4,7 +4,8 @@ import matplotlib.pyplot as plt
 
 class Enviroment():
 
-    def __init__(self, file_name, init_pheromone):
+    def __init__(self, file_name, init_pheromone, min_pheromone):
+        self.min_pheromone = min_pheromone
         #Read Data
         self.data = self.__readData(file_name)
         self.num_jobs = len(self.data)
@@ -102,7 +103,7 @@ class Enviroment():
         """
         return self.G
     
-    def getNodeNames(self)
+    def getNodeNames(self):
         """
         Returns the node names
         of the Graph
@@ -114,49 +115,100 @@ class Enviroment():
         Returns the data readed
         with execution time of
         each node.
-        """"
+        """
         return self.data
 
-    def evaporatePheromone(self, evaporation):
-        """
-        Simulates the pheromone
-        evaporation at each edge of
-        the graph by subtracting the 
-        input value.
-        """
-        for from_job in range(self.num_jobs):
-            for from_machine in range(self.num_machines):
-                #Evaporating pheromone on edges from virtual node
-                self.G[(-1,-1)][(from_job,from_machine)]['pheromone'] -= evaporation
-                for to_job in range(self.num_jobs):
-                    for to_machine in range(self.num_machines):
-                        #Evaporating pheromone on operational edges
-                        if from_job == to_job and from_machine == to_machine:
-                            pass
-                        else:
-                            self.G[(from_job,from_machine)][(to_job,to_machine)]['pheromone'] -= evaporation
-                            
+    def getEdges(self):
+        return [edge for edge in self.G.edges]
 
-    def updatePheromone(self, walk, time):
-        return 22
+    
+    def updatePheromone(
+        self,
+        pheromone_constant,
+        evaporation_rate,
+        cycle_edge_contribution): 
+        """
+        Simulates the pheromone evaporation
+        at each edge by multipling the 
+        evaporation rate to the old 
+        pheromone values.
+        And simulates the ants pherommone
+        trails contribution when adding 
+        the sum of the inverse of the 
+        time of the path that passed 
+        through that edge..
+        """
+        for edge in self.G.edges:
+            from_node = edge[0]
+            to_node = edge[1]
+            old_pheromone = self.G[from_node][to_node]['pheromone']
+            new_pheromone = cycle_edge_contribution[edge] + (evaporation_rate * old_pheromone)
+            if new_pheromone > self.min_pheromone:
+                self.G[from_node][to_node]['pheromone'] = new_pheromone
+            else:
+                self.G[from_node][to_node]['pheromone'] = self.min_pheromone
+
+    
+    
+
 
     def calculateMakespanTime(self, path):
+        """
+        Calculates the optimal time (makespan)
+        for the entry path to the job shop 
+        scheduilling problem.
+
+        returns:
+            makespam time
+        """
         #Inicialize scheduler
-        machine_tasks = []
+        machine_task_moments = [] #Represent all the tasks on their moments in wich machine
+        machine_moments = [] #Represents in wich moment of time that machine is
         for i in range(self.num_machines):
-            machine_tasks.append([])
+            machine_task_moments.append([])
+            machine_moments.append(0)
 
         for edge in path:
-            
-            machine_tasks
+            this_job = edge[1][0]
+            this_machine = edge[1][1]
+            this_task_time = self.data[this_job][str(this_machine)]
+            moment = machine_moments[this_machine]
+            moment_for_task_not_found = True
+            #Verify in wich moment the task can initiate
+            while moment_for_task_not_found:
+                foud_other_machine_with_same_task = False
+                for other_machine in range(self.num_machines):
+                    if other_machine == this_machine:
+                        pass
+                    else:
+                        try:
+                            if this_job == machine_task_moments[other_machine][moment]:
+                                foud_other_machine_with_same_task = True
+                                break
+                        except:
+                            pass
+                
+                if foud_other_machine_with_same_task == False:
+                    #Stops the loop
+                    moment_for_task_not_found = False
+                    #fill the job time for that machine
+                    for i in range(this_task_time):
+                        machine_task_moments[this_machine].append(this_job)
+                    machine_moments[this_machine] = this_task_time + moment + 1
+                    
+                else:
+                    #Make the machine wait until the job is done in another machine
+                    machine_task_moments[this_machine].append('-')
+                    moment+=1
+                    
+        #--------->Uncomment next lines if you want to print the Makespan for each schedule
+        #for i in range(self.num_machines):
+        #    print(machine_task_moments[i])
 
-
-
-        jobs_in_execution = []
-        machines_in_execution = []
-        time = 0
-        while path:
-            for edge in path:
+        machine_execution_lengths = []
+        for i in range(self.num_machines):
+            machine_execution_lengths.append(len(machine_task_moments[i]))
+        return max(machine_execution_lengths)
 
             
 
