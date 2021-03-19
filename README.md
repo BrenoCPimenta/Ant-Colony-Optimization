@@ -25,13 +25,11 @@ When executing the algorithm, the time of the best schedule will be printed. A *
 
 
 ## Data:
-The test instances used for exeperiments on documentation are in <b>code/test_instances</b>. <br>
+The test instances used for exeperiments on documentation are in <b>code/test_instances</b>. <br><br>
 These instances are from a contribution to the [OR-Library by Dirk C. Mattfeld and Rob J.M. Vaessens](http://people.brunel.ac.uk/~mastjjb/jeb/orlib/files/jobshop1.txt)
 
 
 ## References:
-* FLÓREZ, Edson; GÓMEZ, Wilfredo; BAUTIST, Lola. An ant colony optimization algorithm for job shop scheduling problem. Universidad Industrial de Santander, Bucaramanga, Colombia. arXiv:1309.5110, 2013
-Available on:https://arxiv.org/ftp/arxiv/papers/1309/1309.5110.pdf
+* [FLÓREZ, Edson; GÓMEZ, Wilfredo; BAUTIST, Lola. An ant colony optimization algorithm for job shop scheduling problem. Universidad Industrial de Santander, Bucaramanga, Colombia. arXiv:1309.5110, 2013](https://arxiv.org/ftp/arxiv/papers/1309/1309.5110.pdf)
 
-* COLORNI, A.; DORIGO, M.; MANIEZZO, V.; TRUBIAN, M. Ant system for Job-shop scheduling. JORBEL - Belgian Journal of Operations Research, Statistics, and Computer Science, v. 34, n. 1, p. 39-53, 1 jan. 1995.
-Available on: https://www.orbel.be/jorbel/index.php/jorbel/article/view/169/125
+* [COLORNI, A.; DORIGO, M.; MANIEZZO, V.; TRUBIAN, M. Ant system for Job-shop scheduling. JORBEL - Belgian Journal of Operations Research, Statistics, and Computer Science, v. 34, n. 1, p. 39-53, 1 jan. 1995.](https://www.orbel.be/jorbel/index.php/jorbel/article/view/169/125)
