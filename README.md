@@ -27,7 +27,7 @@ When executing the algorithm, the time of the best schedule will be printed. A *
 
 
 ## Data:
-The test instances used for exeperiments on documentation are in <b>code/test_instances</b>. <br><br>
+The test instances used for exeperiments on documentation are in <b>/test_instances</b>. <br><br>
 These instances are from a contribution to the [OR-Library by Dirk C. Mattfeld and Rob J.M. Vaessens](http://people.brunel.ac.uk/~mastjjb/jeb/orlib/files/jobshop1.txt)
 
 
