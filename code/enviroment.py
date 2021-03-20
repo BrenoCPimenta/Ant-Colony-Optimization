@@ -37,7 +37,7 @@ class Enviroment():
                         this_machine = value
                 jobs.append(machines)
 
-        return jobs #Named as data outside this method
+        return jobs #Named as <data> outside this method
 
 
     def __buildGraph(self, init_pheromone):
@@ -124,7 +124,6 @@ class Enviroment():
     
     def updatePheromone(
         self,
-        pheromone_constant,
         evaporation_rate,
         cycle_edge_contribution): 
         """
@@ -146,10 +145,7 @@ class Enviroment():
             if new_pheromone > self.min_pheromone:
                 self.G[from_node][to_node]['pheromone'] = new_pheromone
             else:
-                self.G[from_node][to_node]['pheromone'] = self.min_pheromone
-
-    
-    
+                self.G[from_node][to_node]['pheromone'] = self.min_pheromone    
 
 
     def calculateMakespanTime(self, path):
@@ -201,7 +197,8 @@ class Enviroment():
                     machine_task_moments[this_machine].append('-')
                     moment+=1
                     
-        #--------->Uncomment next lines if you want to print the Makespan for each schedule
+        #--------->Uncomment next lines if you want to print the Makespan 
+        #             for each schedule tested on execution:
         #for i in range(self.num_machines):
         #    print(machine_task_moments[i])
 

@@ -1,9 +1,9 @@
 from enviroment import Enviroment
 from ant import Ant
 import copy
-import sys
-from statistics import mean
+from statistics import mean, stdev
 import json
+import numpy as np
 
 
 class ACO():
@@ -50,7 +50,7 @@ class ACO():
                 {cycle : [Fastest, Mean, Longest], ...}
         """
         results_control = {}
-        fastest_time = sys.float_info.max  #1.7976931348623157e+308
+        all_times = []
         fastest_path = []
         for cycle_number in range(self.cycles):
             this_cycle_times = []
@@ -70,13 +70,10 @@ class ACO():
                     this_cycle_edges_contributions[edge] += self.pheromone_constant/path_time
                 #Recording cycle values:
                 this_cycle_times.append(path_time)
-                if path_time < fastest_time:
-                    fastest_time = path_time
-                    fastest_path = ant_path
+                all_times.append(path_time)
 
             #Update pheromone on edges of the graph
             self.enviroment.updatePheromone(
-                self.pheromone_constant,
                 self.evaporation_rate,
                 this_cycle_edges_contributions)
 
@@ -88,14 +85,12 @@ class ACO():
                             max(this_cycle_times)
             ]})
 
-            #print("Cycle ", cycle_number, ": ",results_control[cycle_number])
         #generating file with fitness through cycles
         json.dump( results_control, open( "ACO_cycles_results.json", 'w' ) )
-
-        print("BEST PATH: ")
-        for edge in fastest_path:
-            print(edge[0],"  ->  ", edge[1])
+        #Print results:
         print("---------------------------------------------------")
-        print("BEST PATH TIME: ", fastest_time, " seconds")
-
-
+        print("Mean: ", mean(all_times))
+        print("Standard deviation: ", stdev(all_times))
+        print("BEST PATH TIME: ", min(all_times), " seconds")
+        print("---------------------------------------------------")
+ 
